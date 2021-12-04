@@ -5,7 +5,6 @@ class ParticipantSchema:
 
     def to_dict(self):
         return {
-            'id': self.participant.id,
             'name': self.participant.name,
             'hints': self.hint_collection_dao.get(self.participant).hints
         }
