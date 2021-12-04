@@ -1,1 +1,2 @@
 bottle==0.12.19
+waitress==2.0.0
