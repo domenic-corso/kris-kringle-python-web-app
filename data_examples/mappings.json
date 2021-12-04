@@ -1,0 +1,18 @@
+[
+    {
+        "giverParticipantId": "85431c93-12a1-42e3-bdb8-fd17e47f7ec8",
+        "receiverParticipantId": "fe2577b0-7d45-425b-b75c-75ab121c2b8c"
+    },
+    {
+        "giverParticipantId": "caf075ce-74e0-4b43-a4e3-36411c4cf182",
+        "receiverParticipantId": "3a77f255-a6dd-44cd-b01c-497cfb1efa0e"
+    },
+    {
+        "giverParticipantId": "fe2577b0-7d45-425b-b75c-75ab121c2b8c",
+        "receiverParticipantId": "85431c93-12a1-42e3-bdb8-fd17e47f7ec8"
+    },
+    {
+        "giverParticipantId": "3a77f255-a6dd-44cd-b01c-497cfb1efa0e",
+        "receiverParticipantId": "caf075ce-74e0-4b43-a4e3-36411c4cf182"
+    }
+]
