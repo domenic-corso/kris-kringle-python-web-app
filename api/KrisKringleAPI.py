@@ -1,8 +1,7 @@
 import json
 from os.path import abspath, join, isfile
-from pathlib import Path
 
-from bottle import get, post, run, request, HTTPResponse
+from bottle import get, post, run, request, HTTPResponse, static_file
 
 from dataaccess import ParticipantDAO, GiverReceiverLinkDAO, HintCollectionDAO
 from schema import ParticipantSchema
@@ -68,12 +67,12 @@ def frontend_handler(path):
     full_path = join(abspath('../frontend/dist'), path)
 
     if not isfile(full_path):
-        return Path(abspath('../frontend/dist/index.html')).read_text()
+        return static_file('index.html', abspath('../frontend/dist'))
 
-    return Path(full_path).read_text()
+    return static_file(path, abspath('../frontend/dist'))
 
 @get('/')
 def index():
-    return Path(abspath('../frontend/dist/index.html')).read_text()
+    return static_file('index.html', abspath('../frontend/dist'))
 
 run(host='0.0.0.0', port=4900, server='waitress')
