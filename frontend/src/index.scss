@@ -1,0 +1,17 @@
+// Customize Bulma
+$primary: #009578;
+$family-sans-serif: 'Readex Pro', sans-serif;
+
+// Import all of Bulma
+@import "../node_modules/bulma/bulma.sass";
+
+// Override Bulma styles
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-hello {
+    padding: 0 1rem;
+}

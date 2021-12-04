@@ -62,17 +62,12 @@ def create_hint(participant_id):
     except InputValidationError as err:
         return respond_with_error(400, str(err))
 
+@get('/view/<uuid>')
+def view(uuid):
+    return static_file('index.html', abspath('../frontend/dist'))
+
 @get('/<path:path>')
 def frontend_handler(path):
-    full_path = join(abspath('../frontend/dist'), path)
-
-    if not isfile(full_path):
-        return static_file('index.html', abspath('../frontend/dist'))
-
     return static_file(path, abspath('../frontend/dist'))
-
-@get('/')
-def index():
-    return static_file('index.html', abspath('../frontend/dist'))
 
 run(host='0.0.0.0', port=4900, server='waitress')
