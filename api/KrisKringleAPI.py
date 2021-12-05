@@ -1,7 +1,7 @@
 import json
 from os.path import abspath, join, isfile
 
-from bottle import get, post, run, request, HTTPResponse, static_file
+from bottle import debug, get, put, run, request, HTTPResponse, static_file
 
 from dataaccess import ParticipantDAO, GiverReceiverLinkDAO, HintCollectionDAO
 from schema import ParticipantSchema
@@ -43,20 +43,20 @@ def create_hint(participant_id):
 
     return response(200, ParticipantSchema(participant, hint_collection_dao).to_dict())
 
-@post('/api/participants/<participant_id>/hints')
+@put('/api/participants/<participant_id>/hints')
 def create_hint(participant_id):
     participant = participant_dao.get(participant_id)
 
     if participant is None:
         return respond_with_error(404, 'Unable to find Participant with ID {}'.format(participant_id))
 
-    hint = request.forms.get('hint')
+    hints = request.json
 
-    if hint is None:
-        return respond_with_error(400, 'Please provide a hint.')
+    if type(hints) is not list:
+        return respond_with_error(400, 'Hints not provided.')
 
     try:
-        hint_collection_dao.add(participant, hint)
+        hint_collection_dao.set(participant, hints)
 
         return response(200, ParticipantSchema(participant, hint_collection_dao).to_dict())
     except InputValidationError as err:
@@ -70,4 +70,4 @@ def view(uuid):
 def frontend_handler(path):
     return static_file(path, abspath('../frontend/dist'))
 
-run(host='0.0.0.0', port=4900, server='waitress')
+run(host='0.0.0.0', port=4900, server='waitress', debug=True)

@@ -15,7 +15,7 @@ class HintCollectionDAO(AbstractDAO):
 
         return HintCollection(participant, [])
 
-    def add(self, participant, new_hint):
+    def set(self, participant, hints):
         raw_hint_collections = super().read_raw()
         target = None
 
@@ -32,10 +32,10 @@ class HintCollectionDAO(AbstractDAO):
 
             raw_hint_collections.append(target)
 
-        if len(target['hints']) >= 5:
+        if len(hints) >= 5:
             raise InputValidationError('A maximum of 5 hints is allowed.')
 
-        target['hints'].append(new_hint)
+        target['hints'] = hints
         super().save_raw(raw_hint_collections)
 
         return self.get(participant)
