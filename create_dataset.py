@@ -1,8 +1,12 @@
 import json
 from os.path import abspath
+from os import getenv
 from random import choice
 import sys
 from uuid import uuid4
+from dotenv import load_dotenv
+from colorama import Fore, Style
+from pathlib import Path
 
 class Result:
     def __init__(self):
@@ -57,7 +61,14 @@ def create_collection(names):
 
     return collection
 
+load_dotenv()
+
 names = sys.argv[1:]
+
+if len(names) == 0:
+    exit("Please provide a list of names, separated by space. Example: 'python create_dataset.py Name1 Name2 Name3 Name4 etc...'")
+
+Path("data").mkdir(exist_ok=True)
 
 collection = create_collection(names)
 participants_file = open(abspath('data/participants.json'), 'w+')
@@ -86,3 +97,10 @@ for result in collection.results:
 json.dump(participants, participants_file, indent=4, sort_keys=True)
 json.dump(mappings, mappings_file, indent=4, sort_keys=True)
 json.dump(hints, hints_file, indent=4, sort_keys=True)
+
+print(Fore.GREEN + Style.BRIGHT + "Success! A new dataset has been saved." + Fore.RESET + Style.RESET_ALL)
+print("")
+print(Fore.CYAN +  Style.BRIGHT + "List of URLs for each participant:" + Style.RESET_ALL)
+
+for participant in participants:
+    print("{} => {}{}{}".format(getenv("host", "http://localhost:3000") + "/view/" + participant['id'], Style.BRIGHT, participant['name'], Style.RESET_ALL))
