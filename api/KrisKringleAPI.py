@@ -2,7 +2,7 @@ import json
 from os import getenv
 from os.path import abspath, join, isfile
 
-from bottle import debug, get, put, run, request, HTTPResponse, static_file
+from bottle import get, put, run, request, HTTPResponse, static_file
 from dotenv import load_dotenv
 
 from dataaccess import ParticipantDAO, GiverReceiverLinkDAO, HintCollectionDAO
@@ -24,6 +24,15 @@ def respond_with_error(status, message):
 def response(status, data):
     return HTTPResponse(status=status, content_type='application/json', body=json.dumps(data))
 
+@get('/api/participants/<participant_id>')
+def get_participant(participant_id):
+    participant = participant_dao.get(participant_id)
+
+    if participant is None:
+        return respond_with_error(404, 'Unable to find Participant with ID {}'.format(participant_id))
+
+    return response(200, ParticipantSchema(participant, hint_collection_dao).to_dict())
+
 @get('/api/participants/<participant_id>/receiver')
 def get_receiver(participant_id):
     participant = participant_dao.get(participant_id)
@@ -37,15 +46,6 @@ def get_receiver(participant_id):
         return respond_with_error(404, 'Unable to find a Receiver for {}'.format(participant.name))
 
     return response(200, ParticipantSchema(link.receiver, hint_collection_dao).to_dict())
-
-@get('/api/participants/<participant_id>')
-def create_hint(participant_id):
-    participant = participant_dao.get(participant_id)
-
-    if participant is None:
-        return respond_with_error(404, 'Unable to find Participant with ID {}'.format(participant_id))
-
-    return response(200, ParticipantSchema(participant, hint_collection_dao).to_dict())
 
 @put('/api/participants/<participant_id>/hints')
 def create_hint(participant_id):
