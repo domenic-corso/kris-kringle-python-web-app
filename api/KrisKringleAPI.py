@@ -1,11 +1,15 @@
 import json
+from os import getenv
 from os.path import abspath, join, isfile
 
 from bottle import debug, get, put, run, request, HTTPResponse, static_file
+from dotenv import load_dotenv
 
 from dataaccess import ParticipantDAO, GiverReceiverLinkDAO, HintCollectionDAO
 from schema import ParticipantSchema
 from common import InputValidationError
+
+load_dotenv(abspath("../.env"))
 
 # Configure data access objects
 participant_dao = ParticipantDAO(abspath('../data/participants.json'))
@@ -70,4 +74,4 @@ def view(uuid):
 def frontend_handler(path):
     return static_file(path, abspath('../frontend/dist'))
 
-run(host='0.0.0.0', port=4900, server='waitress', debug=True)
+run(host='0.0.0.0', port=getenv("port", 3000), server='waitress', debug=True)
