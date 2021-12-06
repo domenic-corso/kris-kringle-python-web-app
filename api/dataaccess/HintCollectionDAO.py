@@ -32,7 +32,7 @@ class HintCollectionDAO(AbstractDAO):
 
             raw_hint_collections.append(target)
 
-        if len(hints) >= 5:
+        if len(hints) > 5:
             raise InputValidationError('A maximum of 5 hints is allowed.')
 
         target['hints'] = hints
